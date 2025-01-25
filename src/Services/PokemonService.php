@@ -17,12 +17,29 @@ class PokemonService
     /**
      * @throws ConnectionException
      */
-    public function get(): array
+    public function get(array $filters): array
     {
-        $result =  $this->apiService->get('v2/pokemon');
+        $url = $this->apiService->getUrl();
+        $result =  $this->apiService->get("$url/v2/pokemon");
 
         SavePokemonJob::dispatch($result['results']);
 
-        return  $result;
+        $query = $this->applyFilters(Pokemon::query(), $filters);
+
+        return $query->paginate(10)->toArray();
+    }
+
+    /**
+     * Apply Filters
+     */
+    protected function applyFilters($query, array $filters)
+    {
+        return $query
+            ->when(!empty($filters['name']), function ($query) use ($filters) {
+                $query->where('name', 'like', '%' . $filters['name'] . '%');
+            })
+            ->when(!empty($filters['type']), function ($query) use ($filters) {
+                $query->where('type', $filters['type']);
+            });
     }
 }

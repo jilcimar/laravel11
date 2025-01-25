@@ -20,12 +20,17 @@ class ApiService
     public function get(string $endpoint, array $params = []): array
     {
         $response = Http::withHeader('Accept', 'application/json')
-            ->get($this->url . $endpoint, $params);
+            ->get($endpoint, $params);
 
         if ($response->failed()) {
             throw new ConnectionException();
         }
 
         return $response->json();
+    }
+
+    public function getUrl()
+    {
+        return $this->url;
     }
 }

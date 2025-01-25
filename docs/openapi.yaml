@@ -1,0 +1,129 @@
+openapi: 3.0.0
+info:
+  title: Pokémon API
+  version: 1.0.0
+  description: API para gerenciar informações de Pokémons
+paths:
+  /v1/pokemons:
+    get:
+      summary: "Retorna uma lista de Pokémons filtrados"
+      description: "Retorna uma lista de Pokémons com base nos filtros fornecidos"
+      parameters:
+        - name: name
+          in: query
+          description: "Filtra os Pokémons pelo nome"
+          required: false
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: "Filtra os Pokémons pelo tipo"
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "Lista de Pokémons com sucesso"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  current_page:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        type:
+                          type: string
+                        height:
+                          type: string
+                        weight:
+                          type: string
+                        url:
+                          type: string
+                        created_at:
+                          type: string
+                          format: date-time
+                        updated_at:
+                          type: string
+                          format: date-time
+                        deleted_at:
+                          type: string
+                          nullable: true
+                  first_page_url:
+                    type: string
+                  from:
+                    type: integer
+                  last_page:
+                    type: integer
+                  last_page_url:
+                    type: string
+                  links:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                          nullable: true
+                        label:
+                          type: string
+                        active:
+                          type: boolean
+                  next_page_url:
+                    type: string
+                    nullable: true
+                  path:
+                    type: string
+                  per_page:
+                    type: integer
+                  prev_page_url:
+                    type: string
+                    nullable: true
+                  to:
+                    type: integer
+                  total:
+                    type: integer
+  /v1/pokemons/{id}:
+    get:
+      summary: "Retorna informações detalhadas de um Pokémon"
+      description: "Retorna as informações de um Pokémon específico com base no ID"
+      parameters:
+        - name: id
+          in: path
+          description: "ID do Pokémon"
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Detalhes do Pokémon com sucesso"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  url:
+                    type: string
+                  active:
+                    type: boolean
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                  deleted_at:
+                    type: string
+                    nullable: true

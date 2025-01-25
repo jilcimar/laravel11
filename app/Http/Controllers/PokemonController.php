@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pokemon;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\JsonResponse;
 use Log\Services\PokemonService;
@@ -21,7 +22,7 @@ class PokemonController extends Controller
         return response()->json($data);
     }
 
-    public function show($pokemon): JsonResponse
+    public function show(Pokemon $pokemon): JsonResponse
     {
         return response()->json($pokemon);
     }

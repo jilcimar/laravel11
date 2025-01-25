@@ -27,8 +27,6 @@ Certifique-se de ter os seguintes requisitos instalados em sua máquina:
    docker-compose up -d
    ```
 
-   Esse comando iniciará os serviços definidos no arquivo `docker-compose.yml`, incluindo o container do Laravel e o banco de dados.
-
 3. **Instalar as dependências do Composer**
 
    Entre no container da aplicação Laravel com o seguinte comando:
@@ -36,9 +34,7 @@ Certifique-se de ter os seguintes requisitos instalados em sua máquina:
    ```bash
    docker exec -it laravel-app bash
    ```
-
-   Substitua `<nome_do_container_laravel>` pelo nome do container configurado no arquivo `docker-compose.yml` (por exemplo, `laravel.test`). Depois de entrar no container, execute:
-
+Instale os pacotes: 
    ```bash
    composer install
    ```
@@ -59,15 +55,7 @@ Certifique-se de ter os seguintes requisitos instalados em sua máquina:
    http://localhost
    ```
 
-   Certifique-se de verificar a porta configurada na variável `APP_PORT` do arquivo `.env`. Se não estiver definida, a porta padrão será `80`.
-
 ## Estrutura do Projeto
 
-- **Aplicação Laravel**: `laravel.test`
-- **Banco de Dados**: `postgres` (PostgreSQL configurado no `docker-compose.yml`)
-
-Certifique-se de configurar corretamente as variáveis de ambiente no arquivo `.env` para conectar ao banco de dados.
-
-## Observação
-
-Caso encontre problemas ao subir os containers ou executar os comandos acima, revise os logs do Docker e certifique-se de que todas as variáveis de ambiente estão configuradas corretamente no arquivo `.env`.
+- **Aplicação Laravel**: `laravel-app`
+- **Banco de Dados**: `laravel-postgres` (PostgreSQL configurado no `docker-compose.yml`)

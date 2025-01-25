@@ -6,6 +6,7 @@ use App\Models\Pokemon;
 use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Log\Services\ApiService;
 
 class SavePokemonJob implements ShouldQueue
 {
@@ -28,14 +29,32 @@ class SavePokemonJob implements ShouldQueue
     {
         logger('saving data - async');
 
+        $apiService = new ApiService();
+
         foreach ($this->data as $pokemon) {
             try {
-                Pokemon::updateOrCreate(
+                $url = $pokemon['url'];
+                $name = $pokemon['name'];
+
+                if (Pokemon::where('name', $name)->exists()) {
+                    continue;
+                }
+
+                $details = $apiService->get($url);
+
+                $type = $details['types'][0]['type']['name'] ?? 'unknown';
+
+                $weight = $details['weight'] ? convertGramsToKilograms($details['weight']) : 0;
+
+                $height = $details['height'] ? convertCmToMeters($details['height']) : 0;
+
+                Pokemon::create(
                     [
-                        'name' => $pokemon['name']
-                    ],
-                    [
-                        'url' => $pokemon['url'],
+                        'name' => $name,
+                        'type' => $type,
+                        'weight' => $weight,
+                        'height' => $height,
+                        'url' => $pokemon['url']
                     ]
                 );
             } catch (Exception $e) {

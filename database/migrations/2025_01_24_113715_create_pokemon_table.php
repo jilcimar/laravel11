@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('pokemon', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->index();
+            $table->string('type');
+            $table->float('height');
+            $table->float('weight');
             $table->string('url');
-            $table->boolean('active')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });
